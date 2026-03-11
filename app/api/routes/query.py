@@ -23,4 +23,5 @@ async def query_benchmark(payload: QueryRequest) -> QueryResponse:
         parsed_role_title=result.parsed_role_title,
         parsed_seniority_level=result.parsed_seniority_level,
         parsed_location=result.parsed_location,
+        parsed_metric_requested=result.parsed_metric_requested
     )
