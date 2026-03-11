@@ -48,6 +48,7 @@ class ProcessQueryUseCase:
                 p75_base_salary=None,
                 p90_base_salary=None,
                 data_points=None,
+                notes=["Missing required query dimensions: role title and/or location"]
             )
 
         benchmark = self.benchmark_repository.find_benchmark(
@@ -80,15 +81,27 @@ class ProcessQueryUseCase:
                 p75_base_salary=None,
                 p90_base_salary=None,
                 data_points=None,
+                notes=["No benchmark record matched the parsed query"]
             )
 
         logger.info("Benchmark record found successfully")
 
+        metric = parsed_query.metric_requested
+        if metric is None or metric.value == "range":
+            summary = (
+                f"Compensation range benchmark for "
+                f"{benchmark.seniority_level.value} {benchmark.role_title} "
+                f"in {benchmark.location}"
+            )
+        else:
+            summary = (
+                f"{metric.value.upper()} compensation benchmark for "
+                f"{benchmark.seniority_level.value} {benchmark.role_title} "
+                f"in {benchmark.location}"
+            )
+
         return QueryResult(
-            summary=(
-                f"Benchmark found for {benchmark.seniority_level.value} "
-                f"{benchmark.role_title} in {benchmark.location}"
-            ),
+            summary=summary,
             insufficient_data=False,
             parsed_role_title=parsed_query.role_title,
             parsed_seniority_level=(
@@ -108,4 +121,5 @@ class ProcessQueryUseCase:
             p75_base_salary=benchmark.p75_base_salary,
             p90_base_salary=benchmark.p90_base_salary,
             data_points=benchmark.data_points,
+             notes=[f"Based on {benchmark.data_points} data points"],
         )

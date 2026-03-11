@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-
 @dataclass
 class QueryResult:
     summary: str
@@ -14,3 +13,4 @@ class QueryResult:
     p75_base_salary: int | None
     p90_base_salary: int | None
     data_points: int | None
+    notes: list[str]
