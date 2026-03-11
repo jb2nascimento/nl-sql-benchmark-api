@@ -8,12 +8,6 @@ The system demonstrates how a compensation platform could allow users to
 query salary benchmarks using natural language while ensuring responses
 are derived exclusively from validated structured datasets.
 
-## Tech Stack
-
-- Python
-- FastAPI
-- Uvicorn
-
 ------------------------------------------------------------------------
 
 # Problem
@@ -24,10 +18,14 @@ retrieve insights.
 
 For example, a user may want to ask:
 
-"What is the compensation range for Senior Backend Engineers in London?"
+> What is the compensation range for Senior Backend Engineers in London?
 
-Instead of manually selecting: - role title - seniority level -
-location - percentile metrics
+Instead of manually selecting:
+
+-   role title\
+-   seniority level\
+-   location\
+-   percentile metrics
 
 This project explores an alternative interaction model where users can
 query compensation data using natural language.
@@ -44,24 +42,31 @@ maintain deterministic behavior and prevent hallucinated results.
 
 Pipeline:
 
-1.  A natural language question is received by the API
-2.  A deterministic parser extracts structured dimensions from the query
+1.  Natural language question is received by the API\
+2.  A deterministic parser extracts structured dimensions from the
+    query\
 3.  Guardrails validate whether the query contains sufficient
-    information
-4.  A repository retrieves benchmark data from a structured dataset
+    information\
+4.  A repository retrieves benchmark data from a structured dataset\
 5.  The API returns a formatted benchmark response
-
-This architecture demonstrates how natural language interfaces can be
-layered on top of traditional structured databases while maintaining
-reliability and transparency.
 
 ------------------------------------------------------------------------
 
 # Architecture
 
-User Question ↓ FastAPI Endpoint ↓ Query Parser ↓ Structured Query
-(role, location, seniority, metric) ↓ Guardrail Validation ↓ Benchmark
-Repository ↓ Formatted API Response
+    User Question
+          ↓
+    FastAPI Endpoint
+          ↓
+    Query Parser
+          ↓
+    Structured Query (role, location, seniority, metric)
+          ↓
+    Guardrail Validation
+          ↓
+    Benchmark Repository
+          ↓
+    Formatted API Response
 
 The repository layer is abstracted to allow replacing the current
 in-memory dataset with a SQL-backed implementation such as PostgreSQL or
@@ -71,30 +76,64 @@ AWS RDS.
 
 # Example Request
 
-POST /query
+POST `/query`
 
-{ "question": "Show P75 compensation for Staff Data Engineer in Berlin"
+``` json
+{
+  "question": "Show P75 compensation for Staff Data Engineer in Berlin"
 }
+```
 
 ------------------------------------------------------------------------
 
 # Example Response
 
-{ "summary": "P75 compensation benchmark for Staff Data Engineer in
-Berlin", "insufficient_data": false, "parsed_role_title": "Data
-Engineer", "parsed_seniority_level": "Staff", "parsed_location":
-"Berlin", "parsed_metric_requested": "p75", "benchmark": { "currency":
-"EUR", "p25_base_salary": 90000, "p50_base_salary": 105000,
-"p75_base_salary": 120000, "p90_base_salary": 135000, "data_points": 89
-}, "notes": \[ "Based on 89 data points" \] }
+``` json
+{
+  "summary": "P75 compensation benchmark for Staff Data Engineer in Berlin",
+  "insufficient_data": false,
+  "parsed_role_title": "Data Engineer",
+  "parsed_seniority_level": "Staff",
+  "parsed_location": "Berlin",
+  "parsed_metric_requested": "p75",
+  "benchmark": {
+    "currency": "EUR",
+    "p25_base_salary": 90000,
+    "p50_base_salary": 105000,
+    "p75_base_salary": 120000,
+    "p90_base_salary": 135000,
+    "data_points": 89
+  },
+  "notes": [
+    "Based on 89 data points"
+  ]
+}
+```
 
 ------------------------------------------------------------------------
 
 # Project Structure
 
-app ├── api │ ├── routes │ └── schemas │ ├── application │ ├── dto │ ├──
-ports │ └── use_cases │ ├── domain │ ├── enums │ └── models │ ├──
-infrastructure │ └── external │ └── core ├── config └── logging
+    app
+     ├── api
+     │   ├── routes
+     │   └── schemas
+     │
+     ├── application
+     │   ├── dto
+     │   ├── ports
+     │   └── use_cases
+     │
+     ├── domain
+     │   ├── enums
+     │   └── models
+     │
+     ├── infrastructure
+     │   └── external
+     │
+     └── core
+         ├── config
+         └── logging
 
 Architecture layers:
 
@@ -112,30 +151,46 @@ Architecture layers:
 
 ### Clone the repository
 
-git clone https://github.com/jb2nascimento/nl-sql-benchmark-api.git cd
-nl-sql-benchmark-api
+``` bash
+git clone https://github.com/YOUR_USER/nl-sql-benchmark-api.git
+cd nl-sql-benchmark-api
+```
 
 ### Create a virtual environment
 
+``` bash
 python -m venv .venv
+```
 
 Activate it:
 
-Windows .venv`\Scripts`{=tex}`\activate`{=tex}
+**Windows**
 
-Mac/Linux source .venv/bin/activate
+``` bash
+.venv\Scripts\activate
+```
+
+**Mac/Linux**
+
+``` bash
+source .venv/bin/activate
+```
 
 ### Install dependencies
 
+``` bash
 pip install -r requirements.txt
+```
 
 ### Run the API
 
+``` bash
 uvicorn app.main:app --reload
+```
 
-### Open the API documentation
+### Open Swagger UI
 
-http://localhost:8000/docs
+    http://localhost:8000/docs
 
 ------------------------------------------------------------------------
 
@@ -146,7 +201,7 @@ implements several safeguards:
 
 -   Queries must contain required dimensions (role title and location)
 -   If no matching benchmark record exists, the system returns an
-    explicit insufficient data response
+    explicit `insufficient_data` response
 -   Salary values are never generated or inferred
 -   All responses originate exclusively from the structured dataset
 
@@ -157,8 +212,8 @@ auditable.
 
 # Dataset
 
-The prototype currently uses an in-memory benchmark dataset containing
-sample compensation records.
+The prototype currently uses an **in-memory benchmark dataset**
+containing sample compensation records.
 
 This design allows validating the full query pipeline without requiring
 a database.
@@ -203,4 +258,3 @@ AI-assisted data systems:
 # License
 
 MIT License
-
