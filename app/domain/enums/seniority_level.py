@@ -1,6 +1,5 @@
 from enum import Enum
 
-
 class SeniorityLevel(str, Enum):
     JUNIOR = "Junior"
     MID = "Mid"
