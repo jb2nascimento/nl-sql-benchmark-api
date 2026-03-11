@@ -62,5 +62,5 @@ class QueryParser:
             role_title=role_title,
             seniority_level=seniority_level,
             location=location,
-            metric_requested=metric_requested
+            metric_requested=metric_requested,
         )

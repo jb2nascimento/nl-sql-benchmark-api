@@ -1,7 +1,14 @@
 from pydantic import BaseModel, Field
 
+
 class QueryRequest(BaseModel):
-    question: str = Field(..., min_length=5, max_length=500, example="What is the compensation range for Senior Backend Engineer in London?")
+    question: str = Field(
+        ...,
+        min_length=5,
+        max_length=500,
+        json_schema_extra={"example": "What is the compensation range for Senior Backend Engineer in London?"},
+    )
+
 
 class BenchmarkResponse(BaseModel):
     currency: str
@@ -10,6 +17,7 @@ class BenchmarkResponse(BaseModel):
     p75_base_salary: int
     p90_base_salary: int
     data_points: int
+
 
 class QueryResponse(BaseModel):
     summary: str

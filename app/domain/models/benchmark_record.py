@@ -3,6 +3,7 @@ from datetime import date
 
 from app.domain.enums.seniority_level import SeniorityLevel
 
+
 @dataclass
 class BenchmarkRecord:
     role_title: str

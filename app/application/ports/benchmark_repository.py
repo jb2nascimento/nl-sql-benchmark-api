@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 from app.domain.enums.seniority_level import SeniorityLevel
 from app.domain.models.benchmark_record import BenchmarkRecord
 
+
 class BenchmarkRepository(ABC):
     @abstractmethod
     def find_benchmark(

@@ -1,6 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
-class MetricRequested(str, Enum):
+
+class MetricRequested(StrEnum):
     RANGE = "range"
     P25 = "p25"
     P50 = "p50"

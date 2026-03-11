@@ -1,6 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
-class SeniorityLevel(str, Enum):
+
+class SeniorityLevel(StrEnum):
     JUNIOR = "Junior"
     MID = "Mid"
     SENIOR = "Senior"
