@@ -8,6 +8,8 @@ The system demonstrates how a compensation platform could allow users to
 query salary benchmarks using natural language while ensuring responses
 are derived exclusively from validated structured datasets.
 
+Use Case: AI-assisted developer tool for translating natural language questions into SQL queries for faster database exploration.
+
 ------------------------------------------------------------------------
 
 # Problem
